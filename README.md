@@ -11,16 +11,33 @@ onboard LED (wired to the CYW43439 wifi chip) in an SOS Morse pattern.
   RP2350_ARM_NTZ port)
 - arm-none-eabi-gcc toolchain
 
+Both are vendored as git submodules under [`pico-sdk/`](pico-sdk) and
+[`FreeRTOS-Kernel/`](FreeRTOS-Kernel), pinned to the commits this project is
+built against. Clone with submodules:
+
+```bash
+git clone --recursive <this-repo-url>
+```
+
+Or, if you already cloned without `--recursive`:
+
+```bash
+git submodule update --init --recursive
+```
+
 ## Build
 
 ```bash
-export PICO_SDK_PATH=/path/to/pico-sdk
-export FREERTOS_KERNEL_PATH=/path/to/raspberrypi/FreeRTOS-Kernel
+export PICO_SDK_PATH=$(pwd)/pico-sdk
+export FREERTOS_KERNEL_PATH=$(pwd)/FreeRTOS-Kernel
 
 mkdir build && cd build
 cmake -DPICO_BOARD=pico2_w ..
 make -j$(nproc)
 ```
+
+(`PICO_SDK_PATH` / `FREERTOS_KERNEL_PATH` can instead point at any other
+checkout if you want to build against a different version.)
 
 Flashing: drag the resulting `sos_blink.uf2` onto a Pico 2 W in BOOTSEL mode.
 
